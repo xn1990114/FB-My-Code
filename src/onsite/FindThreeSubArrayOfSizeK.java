@@ -7,27 +7,25 @@ package onsite;
  */
 public class FindThreeSubArrayOfSizeK {
 	public int findMax(int[] nums,int k){
-		if(k*3>nums.length||k==0){
+		if(nums.length<3*k||k==0){
 			return 0;
 		}
-		int[] counts=new int[nums.length];
-		for(int c=1;c<=3;c++){
+		int[] res=new int[nums.length];
+		for(int round=1;round<=3;round++){
+			int[] curr=new int[nums.length];
+			int start=(round-1)*k;
 			int total=0;
-			int[] newCount=new int[nums.length];
-			int startPoint=c*k-1;
-			for(int i=0;i<nums.length;i++){
+			int s=start;
+			for(int i=start;i<nums.length;i++){
 				total=total+nums[i];
-				if(i>=startPoint){
-					int num1=i-1<startPoint?Integer.MIN_VALUE:newCount[i-1];
-					int num2=i-k<0?0:counts[i-k];
-					newCount[i]=Math.max(num1, num2+total);
-				}
-				if(i-k+1>=0){
-					total=total-nums[i-k+1];
+				if(i-s+1==k){
+					curr[i]=Math.max(i==start+k-1?Integer.MIN_VALUE:curr[i-1],total+(i-k<0?0:res[i-k]));
+					total=total-nums[s];
+					s++;
 				}
 			}
-			counts=newCount;
+			res=curr;
 		}
-		return counts[counts.length-1];
+		return res[nums.length-1];
 	}
 }
