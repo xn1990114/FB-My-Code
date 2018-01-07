@@ -12,13 +12,13 @@ public class CountTwoSumSubSet {
 		Arrays.sort(array);
 		int count=0;
 		int start=0;
-		int end=0;
-		while(start<array.length){
-			while(end<start||(end<array.length&&array[start]+array[end]<target)){
-				end++;
+		int end=array.length-1;;
+		while(start<=end){
+			while(end>=start&&array[start]+array[end]>=target){
+				end--;
 			}
-			if(end>start){
-				count=count+ (1<<(end-start-1));
+			if(end>=start){
+				count=count+ (1<<(end-start));
 			}
 			start++;
 		}
