@@ -17,6 +17,50 @@ public class DecodeStringToBinaryTree {
 			this.val=val;
 		}
 	}
+	public TreeNode buildTree2(String s){
+		TreeNode root=null;
+		int index=0;
+		Set<TreeNode> hasLeftChild=new HashSet<TreeNode>();
+		Stack<TreeNode> stack=new Stack<TreeNode>();
+		while(index<s.length()){
+			char ch=s.charAt(index);
+			if(ch==')'){
+				TreeNode curr=stack.pop();
+				if(stack.isEmpty()){
+					root=curr;
+				}
+				else{
+					if(hasLeftChild.contains(stack.peek())){
+						hasLeftChild.remove(stack.peek());
+						stack.peek().right=curr;
+					}
+					else{
+						hasLeftChild.add(stack.peek());
+						stack.peek().left=curr;
+					}
+				}
+				index++;
+			}
+			else if(Character.isDigit(ch)||ch=='('){
+				if(ch=='('){
+					index++;
+				}
+				int start=index;
+				while(index<s.length()&&Character.isDigit(s.charAt(index))){
+					index++;
+				}
+				TreeNode toadd=start==index?null:new TreeNode(Integer.parseInt(s.substring(start,index)));
+				stack.push(toadd);
+			}
+		}
+		return stack.isEmpty()?null:stack.pop();
+	}
+	
+	
+	
+	
+	
+	
 	public TreeNode buildTree(String s){
 		if(s.length()==0){
 			return null;
